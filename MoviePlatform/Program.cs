@@ -1,7 +1,9 @@
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using MoviePlatform.Data;
 using MoviePlatform.Data.Interceptors;
 using MoviePlatform.Mapping;
+using MoviePlatform.Middleware;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,8 +24,15 @@ builder.Services.AddOpenApi();
 //AutoMapper
 builder.Services.AddAutoMapper(cfg => { }, typeof(MovieMappingProfile));
 
+//Mediatr
+
+builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
+
+builder.Services.AddMediatR(cfg =>
+    cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
 var app = builder.Build();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 // OpenAPI and Scalar
 if (app.Environment.IsDevelopment())
@@ -33,7 +42,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
 
 app.MapControllers();
