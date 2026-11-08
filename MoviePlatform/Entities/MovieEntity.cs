@@ -1,15 +1,18 @@
 ﻿using MoviePlatform.Entities.Enums;
 
 namespace MoviePlatform.Entities;
+
 public class MovieEntity : BaseEntity
 {
-    public required string Title { get; set; } 
+    public required string Title { get; set; }
     public decimal Price { get; set; }
-    public required string Description { get; set; } 
-    public int  DurationInMinutes  { get; set; }
-    public int ReleaseYear  { get; set; }
-    public AgeRating AgeRating { get; set; } = AgeRating.Default;
+    public required string Description { get; set; }
+    public int DurationInMinutes { get; set; }
+    public int ReleaseYear { get; set; }
     public string? PosterUrl { get; set; }
+    public decimal AverageRating { get; set; }
+    public int ReviewsCount { get; set; }
+    public AgeRating AgeRating { get; set; } = AgeRating.Default;
     public long CategoryId { get; set; }
     public CategoryEntity Category { get; set; } = null!;
     public ICollection<ActorEntity> Actors { get; set; } = new List<ActorEntity>();

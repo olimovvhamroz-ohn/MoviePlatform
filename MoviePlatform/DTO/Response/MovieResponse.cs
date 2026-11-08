@@ -1,5 +1,4 @@
-﻿using MoviePlatform.Entities;
-using MoviePlatform.Entities.Enums;
+﻿using MoviePlatform.Entities.Enums;
 
 namespace MoviePlatform.DTO.Response;
 

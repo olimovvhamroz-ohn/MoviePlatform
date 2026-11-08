@@ -10,6 +10,7 @@ public class ApplicationContext(DbContextOptions<ApplicationContext> options) : 
     public DbSet<ActorEntity> Actors { get; set; }
     public DbSet<StudioEntity> Studios { get; set; }
     public DbSet<CategoryEntity> Categories { get; set; }
+    public DbSet<ReviewEntity> Reviews { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

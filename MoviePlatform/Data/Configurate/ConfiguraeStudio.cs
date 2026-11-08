@@ -9,7 +9,7 @@ public class ConfigurateStudio
     {
         modelBuilder.Entity<StudioEntity>(e =>
         {
-            e.ToTable("studio");
+            e.ToTable("studios");
             e.HasKey(x => x.Id);
             e.Property(x => x.Name).IsRequired().HasMaxLength(200);
             e.HasIndex(x => x.Name).IsUnique().HasFilter(DbConstants.NotDeletedFilter);

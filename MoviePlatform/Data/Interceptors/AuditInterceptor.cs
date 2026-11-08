@@ -6,8 +6,6 @@ namespace MoviePlatform.Data.Interceptors;
 
 public class AuditInterceptor : SaveChangesInterceptor
 {
-   
-
     public override ValueTask<InterceptionResult<int>> SavingChangesAsync(
         DbContextEventData eventData, InterceptionResult<int> result,
         CancellationToken cancellationToken = default)
@@ -23,7 +21,7 @@ public class AuditInterceptor : SaveChangesInterceptor
 
         var now = DateTime.UtcNow;
 
-        
+
         foreach (var entry in context.ChangeTracker.Entries().ToList())
         {
             if (entry.State == EntityState.Added)
@@ -45,7 +43,7 @@ public class AuditInterceptor : SaveChangesInterceptor
             {
                 if (entry.Entity is IHasDeletion deleted)
                 {
-                    entry.State = EntityState.Modified;   
+                    entry.State = EntityState.Modified;
                     deleted.IsDeleted = true;
 
                     if (entry.Entity is IHasModification modified)

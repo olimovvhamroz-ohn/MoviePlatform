@@ -2,7 +2,7 @@
 
 public class CategoryResponse
 {
-    
+    public long Id { get; set; }
+
     public required string Title { get; set; } = null!;
-    public ICollection<MovieResponse> Movies { get; set; } = new List<MovieResponse>();
 }
