@@ -9,7 +9,8 @@ public class MovieMappingProfile:Profile
 {
     public MovieMappingProfile()
     {
+        CreateMap<MovieRequest, MovieEntity>()
+            .ForMember(d => d.Actors, o => o.Ignore());
         CreateMap<MovieEntity, MovieResponse>();
-       CreateMap<MovieRequest,MovieResponse>();
     }
 }
