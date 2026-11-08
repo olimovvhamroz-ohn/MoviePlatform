@@ -22,8 +22,8 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Entities\Abstractions\" />
       <Folder Include="Migrations\" />
-      <Folder Include="SQRS\Movie\Query\" />
     </ItemGroup>
 
 </Project>

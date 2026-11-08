@@ -7,9 +7,8 @@ using MoviePlatform.DTO.Request;
 using MoviePlatform.DTO.Response;
 using MoviePlatform.Entities;
 using MoviePlatform.Exceptions;
-using MoviePlatform.Mapping;
 
-namespace MoviePlatform.SQRS.Movie.Command;
+namespace MoviePlatform.CQRS.Movie.Command;
 
 public record CreateMovieCommand(MovieRequest MovieRequest) : IRequest<MovieResponse>;
 public class CreateMovieCommandHandler(
@@ -20,7 +19,6 @@ public class CreateMovieCommandHandler(
 {
     public async Task<MovieResponse> Handle(CreateMovieCommand request, CancellationToken cancellationToken)
     {
-        
 
         await validator.ValidateAndThrowAsync(request.MovieRequest, cancellationToken);
 

@@ -1,6 +1,6 @@
 ﻿namespace MoviePlatform.Data.Configurate;
 
-public class DbConstants
+public static  class DbConstants
 {
     public const string NotDeletedFilter = "\"IsDeleted\" = false";
 

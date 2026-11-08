@@ -22,14 +22,16 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 //AutoMapper
-builder.Services.AddAutoMapper(cfg => { }, typeof(MovieMappingProfile));
+builder.Services.AddAutoMapper(cfg => { }, typeof(MappingProfile));
 
 //Mediatr
 
 builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
-
 builder.Services.AddMediatR(cfg =>
-    cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
+{
+    cfg.RegisterServicesFromAssembly(typeof(Program).Assembly);
+    cfg.RegisterGenericHandlers = true;
+});
 
 var app = builder.Build();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
