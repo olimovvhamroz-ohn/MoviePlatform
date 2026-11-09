@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using MoviePlatform.Interface;
+using MoviePlatform.Entities.Abstractions.Interface;
 
 namespace MoviePlatform.Data.Interceptors;
 

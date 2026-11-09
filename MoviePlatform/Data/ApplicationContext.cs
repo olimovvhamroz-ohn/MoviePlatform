@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MoviePlatform.Data.Configurate;
+using MoviePlatform.Data.Configurations;
 using MoviePlatform.Entities;
 
 namespace MoviePlatform.Data;

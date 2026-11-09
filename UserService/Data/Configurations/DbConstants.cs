@@ -1,4 +1,4 @@
-﻿namespace UserService.Data.Configurate;
+﻿namespace UserService.Data.Configurations;
 
 public static class DbConstants
 {

@@ -11,9 +11,9 @@ using MoviePlatform.Exceptions;
 namespace MoviePlatform.CQRS.Actor.Command;
 public record CreateActorCommand(ActorRequest Request) : IRequest<ActorResponse>;
 
-public class CreateActorCommanHandler(ApplicationContext context,
+public class CreateActorCommandHandler(ApplicationContext context,
     IMapper mapper,
-    ILogger<CreateActorCommanHandler> logger,
+    ILogger<CreateActorCommandHandler> logger,
     IValidator<ActorRequest> validator): IRequestHandler<CreateActorCommand,ActorResponse>
 {
 

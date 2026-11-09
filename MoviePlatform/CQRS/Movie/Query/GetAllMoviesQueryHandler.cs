@@ -10,7 +10,7 @@ public record GetAllMovieQuery(int Page,
     ,long? CategoryId
     ,long? StudioId) : IRequest<List<MovieResponse>>;
 
-public class GetAllMovieQueryHandler(
+public class GetAllMoviesQueryHandler(
     ApplicationContext context,
     IMapper mapper) : IRequestHandler<GetAllMovieQuery, List<MovieResponse>>
 {

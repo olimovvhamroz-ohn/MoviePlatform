@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using MoviePlatform.DTO.Request;
 
-namespace MoviePlatform.Validators.MovieValidtion;
+namespace MoviePlatform.Validators.MovieValidation;
 
 public class MovieRequestValidator : AbstractValidator<MovieRequest>
 {

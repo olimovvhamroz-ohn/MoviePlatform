@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MoviePlatform.Entities;
 
-namespace MoviePlatform.Data.Configurate;
+namespace MoviePlatform.Data.Configurations;
 
 public class ConfigurateStudio
 {

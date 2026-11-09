@@ -1,4 +1,4 @@
-﻿using MoviePlatform.Interface;
+﻿using MoviePlatform.Entities.Abstractions.Interface;
 
 namespace MoviePlatform.Entities;
 

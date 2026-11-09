@@ -1,4 +1,4 @@
-﻿namespace MoviePlatform.Data.Configurate;
+﻿namespace MoviePlatform.Data.Configurations;
 
 public static  class DbConstants
 {
