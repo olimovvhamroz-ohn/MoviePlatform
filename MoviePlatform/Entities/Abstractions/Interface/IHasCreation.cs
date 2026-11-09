@@ -1,4 +1,4 @@
-﻿namespace MoviePlatform;
+﻿namespace MoviePlatform.Entities.Abstractions.Interface;
 
 public interface IHasCreation
 {

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using MoviePlatform.Data;
 using MoviePlatform.DTO.Response;
 
-namespace MoviePlatform.CQRS.Review;
+namespace MoviePlatform.CQRS.Review.Query;
 
 public record GetReviewsByMovieQuery(long MovieId, int Page, int PageSize)
     : IRequest<List<ReviewResponse>>;

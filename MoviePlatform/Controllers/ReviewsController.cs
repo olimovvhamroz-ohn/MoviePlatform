@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MoviePlatform.CQRS.Review;
 using MoviePlatform.CQRS.Review.Command;
+using MoviePlatform.CQRS.Review.Query;
 using MoviePlatform.DTO.Request;
 using MoviePlatform.DTO.Response;
 

@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using MoviePlatform.DTO.Request;
 
-namespace MoviePlatform.Validators;
+namespace MoviePlatform.Validators.StudioValidation;
 
 public class StudioRequestValidator : AbstractValidator<StudioRequest>
 {

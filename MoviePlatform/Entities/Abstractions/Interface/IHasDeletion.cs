@@ -1,4 +1,4 @@
-﻿namespace MoviePlatform.Interface;
+﻿namespace MoviePlatform.Entities.Abstractions.Interface;
 
 public interface IHasDeletion
 {

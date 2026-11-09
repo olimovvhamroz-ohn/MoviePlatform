@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UserService.Entities;
 
-namespace UserService.Data.Configurate;
+namespace UserService.Data.Configurations;
 
 public static class ConfigureUser
 {
