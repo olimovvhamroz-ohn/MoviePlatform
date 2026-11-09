@@ -1,20 +1,23 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MoviePlatform.Entities;
 
 namespace MoviePlatform.Data.Configurations;
 
-public class ConfigureActor
+public class ConfigureActor : IEntityTypeConfiguration<ActorEntity>
 {
-    public static void ActorConfigure(ModelBuilder modelBuilder)
+    public void Configure(EntityTypeBuilder<ActorEntity> builder)
     {
-        modelBuilder.Entity<ActorEntity>(e =>
-        {
-            e.ToTable("actors");
-            e.HasKey(m => m.Id);
-            e.Property(x => x.Name).IsRequired().HasMaxLength(150);
-            e.Property(x => x.Biography).HasMaxLength(4000);
-            e.HasIndex(x => x.Name);
-            e.HasQueryFilter(c => !c.IsDeleted);
-        });
+        builder.ToTable("actors");
+
+        builder.HasKey(m => m.Id);
+
+        builder.Property(x => x.Name).IsRequired().HasMaxLength(150);
+
+        builder.Property(x => x.Biography).HasMaxLength(4000);
+
+        builder.HasIndex(x => x.Name);
+
+        builder.HasQueryFilter(c => !c.IsDeleted);
     }
 }
