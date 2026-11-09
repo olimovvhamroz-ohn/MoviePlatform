@@ -9,7 +9,9 @@ public class ReviewRequestValidator : AbstractValidator<ReviewRequest>
     {
         RuleFor(x => x.UserId).GreaterThan(0);
         RuleFor(x => x.MovieId).GreaterThan(0);
-        RuleFor(x => x.Rating).InclusiveBetween(1, 5);
+        RuleFor(x => x.Rating)
+            .InclusiveBetween(1, 10)
+            .WithMessage("Rating must be between 1 and 10");
         RuleFor(x => x.Comment).MaximumLength(2000);
     }
 }

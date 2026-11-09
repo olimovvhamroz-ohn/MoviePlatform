@@ -5,7 +5,7 @@ using MoviePlatform.CQRS.Movie.Query;
 using MoviePlatform.DTO.Request;
 using MoviePlatform.DTO.Response;
 
-namespace MoviePlatform.Controller;
+namespace MoviePlatform.Controllers;
 
 [ApiController]
 [Route("api/movies")]
@@ -30,4 +30,9 @@ public class MoviesController(IMediator mediator) : ControllerBase
         CancellationToken cancellationToken = default)
         => Ok(await mediator.Send(
             new GetAllMovieQuery(page, pageSize, categoryId, studioId), cancellationToken));
+    
+    [HttpPut("{id:long}")]
+    public async Task<ActionResult<MovieResponse>> Update(
+        long id, MovieRequest request, CancellationToken cancellationToken)
+        => Ok(await mediator.Send(new UpdateMovieCommand(id, request), cancellationToken));
 }

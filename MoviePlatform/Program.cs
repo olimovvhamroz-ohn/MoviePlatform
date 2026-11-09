@@ -27,13 +27,17 @@ builder.Services.AddAutoMapper(cfg => { }, typeof(MappingProfile));
 //Mediatr
 
 builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
+
 builder.Services.AddMediatR(cfg =>
-{
-    cfg.RegisterServicesFromAssembly(typeof(Program).Assembly);
-    cfg.RegisterGenericHandlers = true;
-});
+    cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
 var app = builder.Build();
+if (app.Environment.IsDevelopment())
+{
+    using var scope = app.Services.CreateScope();
+    await scope.ServiceProvider.GetRequiredService<ApplicationContext>()
+        .Database.MigrateAsync();
+}
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 // OpenAPI and Scalar
