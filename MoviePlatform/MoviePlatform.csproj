@@ -22,6 +22,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="CQRS\Common\" />
       <Folder Include="Entities\Abstractions\" />
       <Folder Include="Migrations\" />
     </ItemGroup>

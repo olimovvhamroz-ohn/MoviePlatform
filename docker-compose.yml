@@ -1,0 +1,30 @@
+services:
+  catalog-db:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: movie_bd
+    ports:
+      - "5433:5432"
+    volumes:
+      - catalog-data:/var/lib/postgresql/data
+
+  rabbitmq:
+    image: rabbitmq:4-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  catalog-api:
+    build: ./MoviePlatform
+    depends_on:
+      - catalog-db
+    environment:
+      ConnectionStrings__DefaultConnection: Host=catalog-db;Port=5432;Username=postgres;Password=${POSTGRES_PASSWORD};Database=movie_bd
+      ASPNETCORE_ENVIRONMENT: Development
+    ports:
+      - "5000:8080"
+
+volumes:
+  catalog-data:
