@@ -1,11 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using MoviePlatform.CQRS.Common;
 using MoviePlatform.CQRS.Studio.Command;
 using MoviePlatform.CQRS.Studio.Query;
 using MoviePlatform.DTO.Request;
 using MoviePlatform.DTO.Response;
-using MoviePlatform.Entities;
 
 namespace MoviePlatform.Controllers;
 
@@ -33,12 +31,5 @@ public class StudiosController(IMediator mediator) : ControllerBase
     public async Task<ActionResult<List<StudioResponse>>> GetAll(
         int page = 1, int pageSize = 10, CancellationToken cancellationToken = default)
         => Ok(await mediator.Send(new GetAllStudiosQuery(page, pageSize), cancellationToken));
-    
-    [HttpPut("{id:long}")]
-    public async Task<ActionResult<StudioResponse>> Update(
-        long id, StudioRequest request, CancellationToken ct)
-        => Ok(await mediator.Send(
-            new UpdateEntityCommand<StudioEntity, StudioRequest, StudioResponse>(
-                id, request,
-                x => x.Name.ToLower() == request.Name.ToLower()), ct));
+   
 }

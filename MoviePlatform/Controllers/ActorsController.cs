@@ -2,12 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using MoviePlatform.CQRS.Actor.Command;
 using MoviePlatform.CQRS.Actor.Query;
-using MoviePlatform.CQRS.Common;
 using MoviePlatform.DTO.Request;
 using MoviePlatform.DTO.Response;
-using MoviePlatform.Entities;
 
-namespace MoviePlatform.Controller;
+namespace MoviePlatform.Controllers;
 
 [ApiController]
 [Route("api/actors")]
@@ -34,11 +32,4 @@ public class ActorsController(IMediator mediator) : ControllerBase
     public async Task<ActionResult<List<ActorResponse>>> GetAll(
         int page = 1, int pageSize = 10, CancellationToken cancellationToken = default)
         => Ok(await mediator.Send(new GetAllActorsQuery(page, pageSize), cancellationToken));
-    
-    [HttpPut("{id:long}")]
-    public async Task<ActionResult<ActorResponse>> Update(
-        long id, ActorRequest request, CancellationToken ct)
-        => Ok(await mediator.Send(
-            new UpdateEntityCommand<ActorEntity, ActorRequest, ActorResponse>(id, request), ct));
-    
 }
