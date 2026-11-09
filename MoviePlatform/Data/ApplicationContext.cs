@@ -15,12 +15,6 @@ public class ApplicationContext(DbContextOptions<ApplicationContext> options) : 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-
-        ConfigureCategory.ConfigureCategoryEntity(modelBuilder);
-        ConfigureMovie.ConfigureMovieEntity(modelBuilder);
-        ConfigurateStudio.ConfiguareStudioEntityes(modelBuilder);
-        ConfigureActor.ActorConfigure(modelBuilder);
-        ConfigureReview.ConfigureReviewEntity(modelBuilder);
-        
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(ConfigureMovie).Assembly);
     }
 }

@@ -1,22 +1,25 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MoviePlatform.Entities;
 
 namespace MoviePlatform.Data.Configurations;
 
-public static class ConfigureReview
+public class ConfigureReview : IEntityTypeConfiguration<ReviewEntity>
 {
-    public static void ConfigureReviewEntity(ModelBuilder modelBuilder)
+    public void Configure(EntityTypeBuilder<ReviewEntity> builder)
     {
-        modelBuilder.Entity<ReviewEntity>(e =>
-        {
-            e.ToTable("reviews");
-            e.HasKey(x => x.Id);
-            e.Property(x => x.Comment).HasMaxLength(2000);
-            e.HasIndex(x => new { x.UserId, x.MovieId })
-                .IsUnique()
-                .HasFilter(DbConstants.NotDeletedFilter);
-            e.HasIndex(x => x.MovieId);
-            e.HasQueryFilter(x => !x.IsDeleted);
-        });
+        builder.ToTable("reviews");
+
+        builder.HasKey(x => x.Id);
+
+        builder.Property(x => x.Comment).HasMaxLength(2000);
+
+        builder.HasIndex(x => new { x.UserId, x.MovieId })
+            .IsUnique()
+            .HasFilter(DbConstants.NotDeletedFilter);
+
+        builder.HasIndex(x => x.MovieId);
+
+        builder.HasQueryFilter(x => !x.IsDeleted);
     }
 }
