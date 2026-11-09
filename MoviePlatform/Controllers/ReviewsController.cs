@@ -5,7 +5,7 @@ using MoviePlatform.CQRS.Review.Command;
 using MoviePlatform.DTO.Request;
 using MoviePlatform.DTO.Response;
 
-namespace MoviePlatform.Controller;
+namespace MoviePlatform.Controllers;
 
 [ApiController]
 [Route("api/reviews")]
