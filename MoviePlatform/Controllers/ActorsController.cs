@@ -16,7 +16,6 @@ public class ActorsController(IMediator mediator) : ControllerBase
         ActorRequest request, CancellationToken cancellationToken)
         => Ok(await mediator.Send(new CreateActorCommand(request), cancellationToken));
 
-    
     [HttpDelete("{id:long}")]
     public async Task<IActionResult> Delete(long id, CancellationToken cancellationToken)
     {

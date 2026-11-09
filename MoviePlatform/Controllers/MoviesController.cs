@@ -14,15 +14,14 @@ public class MoviesController(IMediator mediator) : ControllerBase
     [HttpPost]
     public async Task<ActionResult<MovieResponse>> Create(MovieRequest request)
         => Ok(await mediator.Send(new CreateMovieCommand(request)));
-    
-    
+
     [HttpDelete("{id:long}")]
     public async Task<IActionResult> Delete(long id, CancellationToken cancellationToken)
     {
         await mediator.Send(new DeleteMovieCommand(id), cancellationToken);
         return NoContent();
     }
-    
+
     [HttpGet]
     public async Task<ActionResult<List<MovieResponse>>> GetAll(
         int page = 1, int pageSize = 10,
@@ -30,7 +29,7 @@ public class MoviesController(IMediator mediator) : ControllerBase
         CancellationToken cancellationToken = default)
         => Ok(await mediator.Send(
             new GetAllMovieQuery(page, pageSize, categoryId, studioId), cancellationToken));
-    
+
     [HttpPut("{id:long}")]
     public async Task<ActionResult<MovieResponse>> Update(
         long id, MovieRequest request, CancellationToken cancellationToken)

@@ -5,6 +5,7 @@ using MoviePlatform.Data;
 using MoviePlatform.DTO.Response;
 
 namespace MoviePlatform.CQRS.Studio.Query;
+
 public record GetAllStudiosQuery(int Page, int PageSize) : IRequest<List<StudioResponse>>;
 
 public class GetAllStudiosQueryHandler(

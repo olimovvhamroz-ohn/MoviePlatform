@@ -31,5 +31,4 @@ public class StudiosController(IMediator mediator) : ControllerBase
     public async Task<ActionResult<List<StudioResponse>>> GetAll(
         int page = 1, int pageSize = 10, CancellationToken cancellationToken = default)
         => Ok(await mediator.Send(new GetAllStudiosQuery(page, pageSize), cancellationToken));
-   
 }

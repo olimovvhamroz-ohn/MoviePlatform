@@ -5,10 +5,12 @@ using MoviePlatform.Data;
 using MoviePlatform.DTO.Response;
 
 namespace MoviePlatform.CQRS.Movie.Query;
-public record GetAllMovieQuery(int Page,
-    int PageSize
-    ,long? CategoryId
-    ,long? StudioId) : IRequest<List<MovieResponse>>;
+
+public record GetAllMovieQuery(
+    int Page,
+    int PageSize,
+    long? CategoryId,
+    long? StudioId) : IRequest<List<MovieResponse>>;
 
 public class GetAllMoviesQueryHandler(
     ApplicationContext context,
@@ -26,11 +28,16 @@ public class GetAllMoviesQueryHandler(
             .Include(x => x.Studio)
             .Include(x => x.Actors)
             .AsQueryable();
+
         if (request.CategoryId.HasValue)
+        {
             query = query.Where(x => x.CategoryId == request.CategoryId);
+        }
 
         if (request.StudioId.HasValue)
+        {
             query = query.Where(x => x.StudioId == request.StudioId);
+        }
 
         var movies = await query
             .OrderBy(x => x.Title)

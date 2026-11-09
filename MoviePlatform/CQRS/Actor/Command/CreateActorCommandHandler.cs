@@ -9,27 +9,33 @@ using MoviePlatform.Entities;
 using MoviePlatform.Exceptions;
 
 namespace MoviePlatform.CQRS.Actor.Command;
+
 public record CreateActorCommand(ActorRequest Request) : IRequest<ActorResponse>;
 
-public class CreateActorCommandHandler(ApplicationContext context,
+public class CreateActorCommandHandler(
+    ApplicationContext context,
     IMapper mapper,
     ILogger<CreateActorCommandHandler> logger,
-    IValidator<ActorRequest> validator): IRequestHandler<CreateActorCommand,ActorResponse>
+    IValidator<ActorRequest> validator) : IRequestHandler<CreateActorCommand, ActorResponse>
 {
-
     public async Task<ActorResponse> Handle(CreateActorCommand request, CancellationToken cancellationToken)
     {
         var validation = await validator.ValidateAsync(request.Request, cancellationToken);
+
         if (!validation.IsValid)
+        {
             throw new BadRequestException(
                 string.Join("; ", validation.Errors.Select(e => e.ErrorMessage)));
+        }
 
         var isDuplicate = await context.Actors.AnyAsync(
             x => x.Name.ToLower() == request.Request.Name.ToLower()
                  && x.BirthDate == request.Request.BirthDate,
             cancellationToken);
+
         if (isDuplicate)
             throw new ResourceIsAlreadyExistException("Actor with this name and birth date already exists");
+
         var actor = mapper.Map<ActorEntity>(request.Request);
 
         context.Actors.Add(actor);

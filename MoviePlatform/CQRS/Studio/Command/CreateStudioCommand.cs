@@ -21,14 +21,18 @@ public class CreateStudioCommandHandler(
     public async Task<StudioResponse> Handle(CreateStudioCommand request, CancellationToken cancellationToken)
     {
         var validation = await validator.ValidateAsync(request.Studio, cancellationToken);
+
         if (!validation.IsValid)
             throw new BadRequestException(
                 string.Join("; ", validation.Errors.Select(e => e.ErrorMessage)));
 
         var isDuplicate = await context.Studios.AnyAsync(
             x => x.Name.ToLower() == request.Studio.Name.ToLower(), cancellationToken);
+
         if (isDuplicate)
+        {
             throw new ResourceIsAlreadyExistException("Studio with this name already exists");
+        }
 
         var studio = mapper.Map<StudioEntity>(request.Studio);
 
@@ -36,6 +40,7 @@ public class CreateStudioCommandHandler(
         await context.SaveChangesAsync(cancellationToken);
 
         logger.LogInformation("Studio {Id} created", studio.Id);
+
         return mapper.Map<StudioResponse>(studio);
     }
 }

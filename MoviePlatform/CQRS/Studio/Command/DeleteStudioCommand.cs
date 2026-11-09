@@ -19,8 +19,11 @@ public class DeleteStudioCommandHandler(
 
         var hasMovies = await context.Movies
             .AnyAsync(x => x.StudioId == request.Id, cancellationToken);
+
         if (hasMovies)
+        {
             throw new BadRequestException("Studio has movies and cannot be deleted");
+        }
 
         context.Studios.Remove(studio);
         await context.SaveChangesAsync(cancellationToken);

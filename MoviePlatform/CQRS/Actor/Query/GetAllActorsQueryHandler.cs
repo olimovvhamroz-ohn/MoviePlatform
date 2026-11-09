@@ -6,8 +6,8 @@ using MoviePlatform.DTO.Response;
 
 namespace MoviePlatform.CQRS.Actor.Query;
 
-public record GetAllActorsQuery(int Page, int PageSize):IRequest<List<ActorResponse>>;
-    
+public record GetAllActorsQuery(int Page, int PageSize) : IRequest<List<ActorResponse>>;
+
 public class GetAllActorsQueryHandler(
     ApplicationContext context,
     IMapper mapper) : IRequestHandler<GetAllActorsQuery, List<ActorResponse>>

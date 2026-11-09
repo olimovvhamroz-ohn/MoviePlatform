@@ -33,6 +33,4 @@ public class CategoriesController(IMediator mediator) : ControllerBase
     public async Task<ActionResult<List<CategoryResponse>>> GetAll(
         int page = 1, int pageSize = 10, CancellationToken cancellationToken = default)
         => Ok(await mediator.Send(new GetAllCategoriesQuery(page, pageSize), cancellationToken));
-
-   
 }

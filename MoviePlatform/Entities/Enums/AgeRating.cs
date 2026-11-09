@@ -2,9 +2,9 @@
 
 public enum AgeRating
 {
-    Default=0,
-    SixPlus=6,
-    TwelvePlus=12,
-    SixteenPlus=16,
-    EighteenPlus=18, 
+    Default = 0,
+    SixPlus = 1,
+    TwelvePlus = 2,
+    SixteenPlus = 3,
+    EighteenPlus = 4
 }

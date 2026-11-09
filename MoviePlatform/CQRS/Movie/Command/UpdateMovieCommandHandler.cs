@@ -10,15 +10,16 @@ using MoviePlatform.Exceptions;
 namespace MoviePlatform.CQRS.Movie.Command;
 
 public record UpdateMovieCommand(long Id, MovieRequest Request) : IRequest<MovieResponse>;
-public class UpdateMovieCommandHandler(ApplicationContext context
-    , IMapper mapper
-    , IValidator<MovieRequest> validator):IRequestHandler<UpdateMovieCommand,MovieResponse>
+
+public class UpdateMovieCommandHandler(ApplicationContext context, IMapper mapper, IValidator<MovieRequest> validator)
+    : IRequestHandler<UpdateMovieCommand, MovieResponse>
 {
     public async Task<MovieResponse> Handle(UpdateMovieCommand request, CancellationToken cancellationToken)
     {
         var dto = request.Request;
 
         var validation = await validator.ValidateAsync(dto, cancellationToken);
+        
         if (!validation.IsValid)
             throw new BadRequestException(
                 string.Join("; ", validation.Errors.Select(e => e.ErrorMessage)));
@@ -31,8 +32,11 @@ public class UpdateMovieCommandHandler(ApplicationContext context
         var isDuplicate = await context.Movies.AnyAsync(
             x => x.Id != request.Id && x.Title == dto.Title && x.ReleaseYear == dto.ReleaseYear,
             cancellationToken);
+        
         if (isDuplicate)
+        {
             throw new ResourceIsAlreadyExistException("Movie already exists");
+        }
 
         var category = await context.Categories
                            .FirstOrDefaultAsync(x => x.Id == dto.CategoryId, cancellationToken)
@@ -45,8 +49,11 @@ public class UpdateMovieCommandHandler(ApplicationContext context
         var actors = await context.Actors
             .Where(x => dto.ActorId.Contains(x.Id))
             .ToListAsync(cancellationToken);
+
         if (actors.Count != dto.ActorId.Distinct().Count())
+        {
             throw new ResourceNotFoundException("Some actors not found");
+        }
 
         mapper.Map(dto, movie);
         movie.Category = category;
@@ -56,6 +63,7 @@ public class UpdateMovieCommandHandler(ApplicationContext context
             movie.Actors.Add(actor);
 
         await context.SaveChangesAsync(cancellationToken);
+
         return mapper.Map<MovieResponse>(movie);
     }
 }

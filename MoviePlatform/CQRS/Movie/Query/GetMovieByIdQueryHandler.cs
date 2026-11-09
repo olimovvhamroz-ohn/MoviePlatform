@@ -8,8 +8,9 @@ using MoviePlatform.Exceptions;
 namespace MoviePlatform.CQRS.Movie.Query;
 
 public record GetMovieByIdQuery(long Id) : IRequest<MovieResponse>;
-public class GetMovieByIdQueryHandler(ApplicationContext context
-,IMapper mapper):IRequestHandler<GetMovieByIdQuery,MovieResponse>
+
+public class GetMovieByIdQueryHandler(ApplicationContext context, IMapper mapper)
+    : IRequestHandler<GetMovieByIdQuery, MovieResponse>
 {
     public async Task<MovieResponse> Handle(GetMovieByIdQuery request, CancellationToken cancellationToken)
     {
@@ -17,6 +18,5 @@ public class GetMovieByIdQueryHandler(ApplicationContext context
                      ?? throw new ResourceNotFoundException("Movie not foun");
 
         return mapper.Map<MovieResponse>(result);
-
     }
 }

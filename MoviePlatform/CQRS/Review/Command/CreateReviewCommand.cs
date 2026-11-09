@@ -21,14 +21,20 @@ public class CreateReviewCommandHandler(
     public async Task<ReviewResponse> Handle(CreateReviewCommand request, CancellationToken cancellationToken)
     {
         var validation = await validator.ValidateAsync(request.Review, cancellationToken);
+
         if (!validation.IsValid)
+        {
             throw new BadRequestException(
                 string.Join("; ", validation.Errors.Select(e => e.ErrorMessage)));
+        }
 
         var isDuplicate = await context.Reviews.AnyAsync(
-            x => x.UserId == request.Review.UserId && x.MovieId ==  request.Review.MovieId, cancellationToken);
+            x => x.UserId == request.Review.UserId && x.MovieId == request.Review.MovieId, cancellationToken);
+        
         if (isDuplicate)
+        {
             throw new ResourceIsAlreadyExistException("You have already reviewed this movie");
+        }
 
         var review = mapper.Map<ReviewEntity>(request.Review);
 
