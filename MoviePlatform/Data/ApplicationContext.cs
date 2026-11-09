@@ -20,5 +20,7 @@ public class ApplicationContext(DbContextOptions<ApplicationContext> options) : 
         ConfigureMovie.ConfigureMovieEntity(modelBuilder);
         ConfigurateStudio.ConfiguareStudioEntityes(modelBuilder);
         ConfigureActor.ActorConfigure(modelBuilder);
+        ConfigureReview.ConfigureReviewEntity(modelBuilder);
+        
     }
 }
