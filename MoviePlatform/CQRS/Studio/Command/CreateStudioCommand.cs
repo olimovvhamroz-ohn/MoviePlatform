@@ -7,6 +7,7 @@ using MoviePlatform.DTO.Request;
 using MoviePlatform.DTO.Response;
 using MoviePlatform.Entities;
 using MoviePlatform.Exceptions;
+using MoviePlatform.Mapping;
 
 namespace MoviePlatform.CQRS.Studio.Command;
 
@@ -34,13 +35,11 @@ public class CreateStudioCommandHandler(
             throw new ResourceIsAlreadyExistException("Studio with this name already exists");
         }
 
-        var studio = mapper.Map<StudioEntity>(request.Studio);
-
+        var studio = StudioMapping.ToEntity(request.Studio);
         context.Studios.Add(studio);
         await context.SaveChangesAsync(cancellationToken);
 
         logger.LogInformation("Studio {Id} created", studio.Id);
 
-        return mapper.Map<StudioResponse>(studio);
-    }
+        return StudioMapping.ToResponse(studio);    }
 }

@@ -1,16 +1,15 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using MoviePlatform.Data;
 using MoviePlatform.DTO.Response;
+using MoviePlatform.Mapping;
 
 namespace MoviePlatform.CQRS.Actor.Query;
 
 public record GetAllActorsQuery(int Page, int PageSize) : IRequest<List<ActorResponse>>;
 
 public class GetAllActorsQueryHandler(
-    ApplicationContext context,
-    IMapper mapper) : IRequestHandler<GetAllActorsQuery, List<ActorResponse>>
+    ApplicationContext context) : IRequestHandler<GetAllActorsQuery, List<ActorResponse>>
 {
     public async Task<List<ActorResponse>> Handle(
         GetAllActorsQuery request, CancellationToken cancellationToken)
@@ -26,6 +25,7 @@ public class GetAllActorsQueryHandler(
             .Take(pageSize)
             .ToListAsync(cancellationToken);
 
-        return mapper.Map<List<ActorResponse>>(actor);
-    }
+        return actor
+            .Select(ActorMapping.ToResponse)
+            .ToList();    }
 }

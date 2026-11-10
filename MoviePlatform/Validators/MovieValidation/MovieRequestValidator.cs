@@ -15,6 +15,6 @@ public class MovieRequestValidator : AbstractValidator<MovieRequest>
         RuleFor(x => x.AgeRating).IsInEnum();
         RuleFor(x => x.CategoryId).GreaterThan(0);
         RuleFor(x => x.StudioId).GreaterThan(0);
-        RuleForEach(x => x.ActorId).GreaterThan(0);
+        RuleForEach(x => x.ActorIds).GreaterThan(0);
     }
 }

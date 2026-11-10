@@ -1,17 +1,16 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using MoviePlatform.Data;
 using MoviePlatform.DTO.Response;
 using MoviePlatform.Exceptions;
+using MoviePlatform.Mapping;
 
 namespace MoviePlatform.CQRS.Studio.Query;
 
 public record GetStudioByIdQuery(long Id) : IRequest<StudioResponse>;
 
 public class GetStudioByIdQueryHandler(
-    ApplicationContext context,
-    IMapper mapper) : IRequestHandler<GetStudioByIdQuery, StudioResponse>
+    ApplicationContext context) : IRequestHandler<GetStudioByIdQuery, StudioResponse>
 {
     public async Task<StudioResponse> Handle(GetStudioByIdQuery request, CancellationToken cancellationToken)
     {
@@ -20,6 +19,6 @@ public class GetStudioByIdQueryHandler(
                          .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken)
                      ?? throw new ResourceNotFoundException($"Studio with id {request.Id} not found");
 
-        return mapper.Map<StudioResponse>(studio);
+        return StudioMapping.ToResponse(studio);
     }
 }

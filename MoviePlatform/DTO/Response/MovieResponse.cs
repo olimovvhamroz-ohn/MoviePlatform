@@ -9,6 +9,8 @@ public class MovieResponse
     public required string Description { get; set; }
     public int DurationInMinutes { get; set; }
     public int ReleaseYear { get; set; }
+    public double AverageRating { get; set; }
+    public int ReviewsCount { get; set; }
     public AgeRating AgeRating { get; set; }
     public string? PosterUrl { get; set; }
     public long CategoryId { get; set; }

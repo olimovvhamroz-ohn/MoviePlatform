@@ -13,5 +13,5 @@ public class MovieRequest
     public string? PosterUrl { get; set; }
     public long CategoryId { get; set; }
     public long StudioId { get; set; }
-    public List<long> ActorId { get; set; } = new();
+    public List<long> ActorIds { get; set; } = new();
 }

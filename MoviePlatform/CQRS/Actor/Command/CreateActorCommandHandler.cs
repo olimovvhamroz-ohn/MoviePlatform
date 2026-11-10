@@ -1,12 +1,11 @@
-﻿using AutoMapper;
-using FluentValidation;
+﻿using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using MoviePlatform.Data;
 using MoviePlatform.DTO.Request;
 using MoviePlatform.DTO.Response;
-using MoviePlatform.Entities;
 using MoviePlatform.Exceptions;
+using MoviePlatform.Mapping;
 
 namespace MoviePlatform.CQRS.Actor.Command;
 
@@ -14,7 +13,6 @@ public record CreateActorCommand(ActorRequest Request) : IRequest<ActorResponse>
 
 public class CreateActorCommandHandler(
     ApplicationContext context,
-    IMapper mapper,
     ILogger<CreateActorCommandHandler> logger,
     IValidator<ActorRequest> validator) : IRequestHandler<CreateActorCommand, ActorResponse>
 {
@@ -36,12 +34,12 @@ public class CreateActorCommandHandler(
         if (isDuplicate)
             throw new ResourceIsAlreadyExistException("Actor with this name and birth date already exists");
 
-        var actor = mapper.Map<ActorEntity>(request.Request);
+        var actor = ActorMapping.ToEntity(request.Request);
 
         context.Actors.Add(actor);
         await context.SaveChangesAsync(cancellationToken);
 
         logger.LogInformation("Actor {Id} created", actor.Id);
-        return mapper.Map<ActorResponse>(actor);
+        return ActorMapping.ToResponse(actor);
     }
 }

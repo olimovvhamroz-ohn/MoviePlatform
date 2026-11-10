@@ -2,7 +2,6 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using MoviePlatform.Data;
 using MoviePlatform.Data.Interceptors;
-using MoviePlatform.Mapping;
 using MoviePlatform.Middleware;
 using Scalar.AspNetCore;
 
@@ -21,8 +20,6 @@ builder.Services.AddControllers();
 // OpenAPI
 builder.Services.AddOpenApi();
 
-//AutoMapper
-builder.Services.AddAutoMapper(cfg => { }, typeof(MappingProfile));
 
 //Mediatr
 
