@@ -1,12 +1,11 @@
-﻿using AutoMapper;
-using FluentValidation;
+﻿using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using MoviePlatform.Data;
 using MoviePlatform.DTO.Request;
 using MoviePlatform.DTO.Response;
-using MoviePlatform.Entities;
 using MoviePlatform.Exceptions;
+using MoviePlatform.Mapping;
 
 namespace MoviePlatform.CQRS.Review.Command;
 
@@ -14,7 +13,6 @@ public record CreateReviewCommand(ReviewRequest Review) : IRequest<ReviewRespons
 
 public class CreateReviewCommandHandler(
     ApplicationContext context,
-    IMapper mapper,
     ILogger<CreateReviewCommandHandler> logger,
     IValidator<ReviewRequest> validator) : IRequestHandler<CreateReviewCommand, ReviewResponse>
 {
@@ -30,18 +28,17 @@ public class CreateReviewCommandHandler(
 
         var isDuplicate = await context.Reviews.AnyAsync(
             x => x.UserId == request.Review.UserId && x.MovieId == request.Review.MovieId, cancellationToken);
-        
+
         if (isDuplicate)
         {
             throw new ResourceIsAlreadyExistException("You have already reviewed this movie");
         }
 
-        var review = mapper.Map<ReviewEntity>(request.Review);
-
+        var review = ReviewMapping.ToEntity(request.Review);
         context.Reviews.Add(review);
         await context.SaveChangesAsync(cancellationToken);
 
         logger.LogInformation("Review {Id} created for movie {MovieId}", review.Id, review.MovieId);
-        return mapper.Map<ReviewResponse>(review);
+        return ReviewMapping.ToResponse(review);
     }
 }

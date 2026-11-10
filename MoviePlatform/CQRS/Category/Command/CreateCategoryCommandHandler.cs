@@ -7,6 +7,7 @@ using MoviePlatform.DTO.Request;
 using MoviePlatform.DTO.Response;
 using MoviePlatform.Entities;
 using MoviePlatform.Exceptions;
+using MoviePlatform.Mapping;
 
 namespace MoviePlatform.CQRS.Category.Command;
 
@@ -14,7 +15,7 @@ public record CreateCategoryCommand(CategoryRequest Request) : IRequest<Category
 
 public class CreateCategoryCommandHandler(
     ApplicationContext context,
-    IMapper mapper,
+
     ILogger<CreateCategoryCommandHandler> loger,
     IValidator<CategoryRequest> validator) : IRequestHandler<CreateCategoryCommand, CategoryResponse>
 {
@@ -35,11 +36,10 @@ public class CreateCategoryCommandHandler(
             throw new ResourceIsAlreadyExistException("The record already exists");
         }
 
-        var category = mapper.Map<CategoryEntity>(request.Request);
-
+        var category = CategoryMapping.ToEntity(request.Request);
         context.Add(category);
         await context.SaveChangesAsync(cancellationToken);
         loger.LogInformation("Category created: {Id}", category.Id);
-        return mapper.Map<CategoryResponse>(category);
+        return CategoryMapping.ToResponse(category);
     }
 }

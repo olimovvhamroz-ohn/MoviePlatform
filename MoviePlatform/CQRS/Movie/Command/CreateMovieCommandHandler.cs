@@ -1,12 +1,11 @@
-﻿using AutoMapper;
-using FluentValidation;
+﻿using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using MoviePlatform.Data;
 using MoviePlatform.DTO.Request;
 using MoviePlatform.DTO.Response;
-using MoviePlatform.Entities;
 using MoviePlatform.Exceptions;
+using MoviePlatform.Mapping;
 
 namespace MoviePlatform.CQRS.Movie.Command;
 
@@ -14,7 +13,6 @@ public record CreateMovieCommand(MovieRequest MovieRequest) : IRequest<MovieResp
 
 public class CreateMovieCommandHandler(
     ApplicationContext context,
-    IMapper mapper,
     IValidator<MovieRequest> validator)
     : IRequestHandler<CreateMovieCommand, MovieResponse>
 {
@@ -41,21 +39,21 @@ public class CreateMovieCommandHandler(
 
 
         var actors = await context.Actors
-            .Where(x => request.MovieRequest.ActorId.Contains(x.Id))
+            .Where(x => request.MovieRequest.ActorIds.Contains(x.Id))
             .ToListAsync(cancellationToken);
 
-        if (actors.Count != request.MovieRequest.ActorId.Distinct().Count())
+        if (actors.Count != request.MovieRequest.ActorIds.Distinct().Count())
         {
             throw new ResourceNotFoundException(" Actor not found");
         }
 
-        var movie = mapper.Map<MovieEntity>(request.MovieRequest);
+        var movie = MovieMapping.ToEntity(request.MovieRequest);
         movie.Actors = actors;
         movie.Category = category;
         movie.Studio = studio;
 
         context.Add(movie);
         await context.SaveChangesAsync(cancellationToken);
-        return mapper.Map<MovieResponse>(movie);
+        return MovieMapping.ToResponse(movie);
     }
 }

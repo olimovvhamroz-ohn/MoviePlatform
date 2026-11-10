@@ -1,8 +1,8 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using MoviePlatform.Data;
 using MoviePlatform.DTO.Response;
+using MoviePlatform.Mapping;
 
 namespace MoviePlatform.CQRS.Review.Query;
 
@@ -10,8 +10,7 @@ public record GetReviewsByMovieQuery(long MovieId, int Page, int PageSize)
     : IRequest<List<ReviewResponse>>;
 
 public class GetReviewsByMovieQueryHandler(
-    ApplicationContext context,
-    IMapper mapper) : IRequestHandler<GetReviewsByMovieQuery, List<ReviewResponse>>
+    ApplicationContext context) : IRequestHandler<GetReviewsByMovieQuery, List<ReviewResponse>>
 {
     public async Task<List<ReviewResponse>> Handle(
         GetReviewsByMovieQuery request, CancellationToken cancellationToken)
@@ -28,6 +27,8 @@ public class GetReviewsByMovieQueryHandler(
             .Take(pageSize)
             .ToListAsync(cancellationToken);
 
-        return mapper.Map<List<ReviewResponse>>(reviews);
+        return reviews
+            .Select(ReviewMapping.ToResponse)
+            .ToList();
     }
 }

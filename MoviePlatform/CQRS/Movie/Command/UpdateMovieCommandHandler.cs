@@ -6,6 +6,7 @@ using MoviePlatform.Data;
 using MoviePlatform.DTO.Request;
 using MoviePlatform.DTO.Response;
 using MoviePlatform.Exceptions;
+using MoviePlatform.Mapping;
 
 namespace MoviePlatform.CQRS.Movie.Command;
 
@@ -47,15 +48,15 @@ public class UpdateMovieCommandHandler(ApplicationContext context, IMapper mappe
                      ?? throw new ResourceNotFoundException("Studio not found");
 
         var actors = await context.Actors
-            .Where(x => dto.ActorId.Contains(x.Id))
+            .Where(x => dto.ActorIds.Contains(x.Id))
             .ToListAsync(cancellationToken);
 
-        if (actors.Count != dto.ActorId.Distinct().Count())
+        if (actors.Count != dto.ActorIds.Distinct().Count())
         {
             throw new ResourceNotFoundException("Some actors not found");
         }
 
-        mapper.Map(dto, movie);
+        MovieMapping.UpdateEntity(movie, dto);
         movie.Category = category;
         movie.Studio = studio;
         movie.Actors.Clear();
@@ -64,6 +65,6 @@ public class UpdateMovieCommandHandler(ApplicationContext context, IMapper mappe
 
         await context.SaveChangesAsync(cancellationToken);
 
-        return mapper.Map<MovieResponse>(movie);
+        return MovieMapping.ToResponse(movie);
     }
 }
