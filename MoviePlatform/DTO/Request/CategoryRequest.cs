@@ -3,5 +3,4 @@
 public class CategoryRequest
 {
     public required string Title { get; set; } = null!;
-
 }

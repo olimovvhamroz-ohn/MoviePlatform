@@ -21,7 +21,7 @@ public class MappingProfile : Profile
 
         CreateMap<ActorRequest, ActorEntity>();
         CreateMap<ActorEntity, ActorResponse>();
-        
+
         CreateMap<ReviewRequest, ReviewEntity>();
         CreateMap<ReviewEntity, ReviewResponse>();
     }

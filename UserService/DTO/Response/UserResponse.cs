@@ -3,5 +3,5 @@
 public class UserResponse
 {
     public required string Name { get; set; }
-    public  required DateOnly BirthDate { get; set; }
+    public required DateOnly BirthDate { get; set; }
 }

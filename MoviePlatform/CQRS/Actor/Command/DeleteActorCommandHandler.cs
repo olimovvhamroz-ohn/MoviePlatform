@@ -14,8 +14,8 @@ public class DeleteActorCommandHandler(
     public async Task<bool> Handle(DeleteActorCommand request, CancellationToken cancellationToken)
     {
         var actor = await context.Actors
-                         .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken)
-                     ?? throw new ResourceNotFoundException($"Actor with id {request.Id} not found");
+                        .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken)
+                    ?? throw new ResourceNotFoundException($"Actor with id {request.Id} not found");
 
         context.Actors.Remove(actor);
         await context.SaveChangesAsync(cancellationToken);

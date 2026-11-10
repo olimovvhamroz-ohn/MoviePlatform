@@ -21,13 +21,19 @@ public class CreateCategoryCommandHandler(
     public async Task<CategoryResponse> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
     {
         var validation = await validator.ValidateAsync(request.Request, cancellationToken);
+
         if (!validation.IsValid)
+        {
             throw new BadRequestException("validation.Errors");
+        }
+
         var isDublicate = await context.Categories.AnyAsync(x => x.Title.ToLower() == request.Request.Title.ToLower(),
             cancellationToken);
 
         if (isDublicate)
+        {
             throw new ResourceIsAlreadyExistException("The record already exists");
+        }
 
         var category = mapper.Map<CategoryEntity>(request.Request);
 

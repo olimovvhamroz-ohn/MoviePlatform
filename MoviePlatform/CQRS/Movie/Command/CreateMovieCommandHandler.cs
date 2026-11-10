@@ -11,6 +11,7 @@ using MoviePlatform.Exceptions;
 namespace MoviePlatform.CQRS.Movie.Command;
 
 public record CreateMovieCommand(MovieRequest MovieRequest) : IRequest<MovieResponse>;
+
 public class CreateMovieCommandHandler(
     ApplicationContext context,
     IMapper mapper,
@@ -19,15 +20,16 @@ public class CreateMovieCommandHandler(
 {
     public async Task<MovieResponse> Handle(CreateMovieCommand request, CancellationToken cancellationToken)
     {
-
         await validator.ValidateAndThrowAsync(request.MovieRequest, cancellationToken);
 
-        var isDublicate = await context.Movies.AnyAsync(x => x.Title == request.MovieRequest.Title
+        var isDuplicate = await context.Movies.AnyAsync(x => x.Title == request.MovieRequest.Title
                                                              && x.ReleaseYear == request.MovieRequest.ReleaseYear,
             cancellationToken);
 
-        if (isDublicate)
+        if (isDuplicate)
+        {
             throw new ResourceIsAlreadyExistException("The record already exists");
+        }
 
         var category = await context.Categories
                            .FirstOrDefaultAsync(x => x.Id == request.MovieRequest.CategoryId, cancellationToken)
@@ -41,8 +43,11 @@ public class CreateMovieCommandHandler(
         var actors = await context.Actors
             .Where(x => request.MovieRequest.ActorId.Contains(x.Id))
             .ToListAsync(cancellationToken);
+
         if (actors.Count != request.MovieRequest.ActorId.Distinct().Count())
+        {
             throw new ResourceNotFoundException(" Actor not found");
+        }
 
         var movie = mapper.Map<MovieEntity>(request.MovieRequest);
         movie.Actors = actors;

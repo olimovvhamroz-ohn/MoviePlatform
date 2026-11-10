@@ -3,7 +3,7 @@ using MoviePlatform.DTO.Request;
 
 namespace MoviePlatform.Validators.CategoryValidation;
 
-public class CategoryRequestValidation:AbstractValidator<CategoryRequest>
+public class CategoryRequestValidation : AbstractValidator<CategoryRequest>
 {
     public CategoryRequestValidation()
     {

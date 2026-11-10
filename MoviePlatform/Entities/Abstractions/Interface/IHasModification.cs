@@ -3,5 +3,4 @@
 public interface IHasModification
 {
     DateTime UpdatedAt { get; set; }
-
 }

@@ -9,7 +9,7 @@ namespace MoviePlatform.CQRS.Actor.Query;
 
 public record GetActorByIdQuery(long Id) : IRequest<ActorResponse>;
 
-public class GetActorByIdQueryHandler (
+public class GetActorByIdQueryHandler(
     ApplicationContext context,
     IMapper mapper) : IRequestHandler<GetActorByIdQuery, ActorResponse>
 {

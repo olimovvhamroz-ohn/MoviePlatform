@@ -38,6 +38,7 @@ if (app.Environment.IsDevelopment())
     await scope.ServiceProvider.GetRequiredService<ApplicationContext>()
         .Database.MigrateAsync();
 }
+
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 // OpenAPI and Scalar

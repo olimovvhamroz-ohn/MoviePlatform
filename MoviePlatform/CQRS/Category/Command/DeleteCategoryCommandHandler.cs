@@ -19,8 +19,12 @@ public class DeleteCategoryCommandHandler(
 
         var hasMovies = await context.Movies
             .AnyAsync(x => x.CategoryId == request.Id, cancellationToken);
+
         if (hasMovies)
+        {
             throw new BadRequestException("Category has movies and cannot be deleted");
+        }
+
         context.Categories.Remove(category);
         await context.SaveChangesAsync(cancellationToken);
         logger.LogInformation($"Successful  Delete {request.Id} ");
