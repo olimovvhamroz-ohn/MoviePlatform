@@ -1,5 +1,4 @@
-﻿using FluentValidation;
-using MediatR;
+﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using MoviePlatform.Data;
 using MoviePlatform.DTO.Request;
@@ -13,18 +12,11 @@ public record CreateActorCommand(ActorRequest Request) : IRequest<ActorResponse>
 
 public class CreateActorCommandHandler(
     ApplicationContext context,
-    ILogger<CreateActorCommandHandler> logger,
-    IValidator<ActorRequest> validator) : IRequestHandler<CreateActorCommand, ActorResponse>
+    ILogger<CreateActorCommandHandler> logger) : IRequestHandler<CreateActorCommand, ActorResponse>
 {
     public async Task<ActorResponse> Handle(CreateActorCommand request, CancellationToken cancellationToken)
     {
-        var validation = await validator.ValidateAsync(request.Request, cancellationToken);
-
-        if (!validation.IsValid)
-        {
-            throw new BadRequestException(
-                string.Join("; ", validation.Errors.Select(e => e.ErrorMessage)));
-        }
+        
 
         var isDuplicate = await context.Actors.AnyAsync(
             x => x.Name.ToLower() == request.Request.Name.ToLower()

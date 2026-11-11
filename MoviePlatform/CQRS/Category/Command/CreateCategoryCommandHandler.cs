@@ -1,11 +1,8 @@
-﻿using AutoMapper;
-using FluentValidation;
-using MediatR;
+﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using MoviePlatform.Data;
 using MoviePlatform.DTO.Request;
 using MoviePlatform.DTO.Response;
-using MoviePlatform.Entities;
 using MoviePlatform.Exceptions;
 using MoviePlatform.Mapping;
 
@@ -16,18 +13,11 @@ public record CreateCategoryCommand(CategoryRequest Request) : IRequest<Category
 public class CreateCategoryCommandHandler(
     ApplicationContext context,
 
-    ILogger<CreateCategoryCommandHandler> loger,
-    IValidator<CategoryRequest> validator) : IRequestHandler<CreateCategoryCommand, CategoryResponse>
+    ILogger<CreateCategoryCommandHandler> loger) : IRequestHandler<CreateCategoryCommand, CategoryResponse>
 {
     public async Task<CategoryResponse> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
     {
-        var validation = await validator.ValidateAsync(request.Request, cancellationToken);
-
-        if (!validation.IsValid)
-        {
-            throw new BadRequestException("validation.Errors");
-        }
-
+       
         var isDublicate = await context.Categories.AnyAsync(x => x.Title.ToLower() == request.Request.Title.ToLower(),
             cancellationToken);
 
