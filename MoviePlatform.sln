@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoviePlatform", "MoviePlatform\MoviePlatform.csproj", "{5030AF11-96D1-43E8-8EE9-F37A97F21CDE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatalogService", "CatalogService\CatalogService.csproj", "{5030AF11-96D1-43E8-8EE9-F37A97F21CDE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserService", "UserService\UserService.csproj", "{DF8CCB96-31B7-4072-9063-BFEB4F8A380F}"
 EndProject
