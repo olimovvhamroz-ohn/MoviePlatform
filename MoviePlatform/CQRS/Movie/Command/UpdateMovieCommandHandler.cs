@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using MoviePlatform.Data;
@@ -12,18 +11,12 @@ namespace MoviePlatform.CQRS.Movie.Command;
 
 public record UpdateMovieCommand(long Id, MovieRequest Request) : IRequest<MovieResponse>;
 
-public class UpdateMovieCommandHandler(ApplicationContext context, IMapper mapper, IValidator<MovieRequest> validator)
+public class UpdateMovieCommandHandler(ApplicationContext context, IMapper mapper)
     : IRequestHandler<UpdateMovieCommand, MovieResponse>
 {
     public async Task<MovieResponse> Handle(UpdateMovieCommand request, CancellationToken cancellationToken)
     {
         var dto = request.Request;
-
-        var validation = await validator.ValidateAsync(dto, cancellationToken);
-        
-        if (!validation.IsValid)
-            throw new BadRequestException(
-                string.Join("; ", validation.Errors.Select(e => e.ErrorMessage)));
 
         var movie = await context.Movies
                         .Include(x => x.Actors)

@@ -1,4 +1,5 @@
 using FluentValidation;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using MoviePlatform.Data;
 using MoviePlatform.Data.Interceptors;
@@ -24,9 +25,11 @@ builder.Services.AddOpenApi();
 //Mediatr
 
 builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
-
-builder.Services.AddMediatR(cfg =>
-    cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
+builder.Services.AddMediatR(config =>
+{
+    config.RegisterServicesFromAssembly(typeof(Program).Assembly);
+    config.AddOpenBehavior(typeof(IPipelineBehavior<,>));
+});
 
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
@@ -35,6 +38,8 @@ if (app.Environment.IsDevelopment())
     await scope.ServiceProvider.GetRequiredService<ApplicationContext>()
         .Database.MigrateAsync();
 }
+
+
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 

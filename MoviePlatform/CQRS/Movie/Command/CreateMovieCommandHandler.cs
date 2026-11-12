@@ -1,5 +1,4 @@
-﻿using FluentValidation;
-using MediatR;
+﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using MoviePlatform.Data;
 using MoviePlatform.DTO.Request;
@@ -12,13 +11,11 @@ namespace MoviePlatform.CQRS.Movie.Command;
 public record CreateMovieCommand(MovieRequest MovieRequest) : IRequest<MovieResponse>;
 
 public class CreateMovieCommandHandler(
-    ApplicationContext context,
-    IValidator<MovieRequest> validator)
+    ApplicationContext context)
     : IRequestHandler<CreateMovieCommand, MovieResponse>
 {
     public async Task<MovieResponse> Handle(CreateMovieCommand request, CancellationToken cancellationToken)
     {
-        await validator.ValidateAndThrowAsync(request.MovieRequest, cancellationToken);
 
         var isDuplicate = await context.Movies.AnyAsync(x => x.Title == request.MovieRequest.Title
                                                              && x.ReleaseYear == request.MovieRequest.ReleaseYear,
