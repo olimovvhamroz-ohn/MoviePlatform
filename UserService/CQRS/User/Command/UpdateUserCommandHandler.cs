@@ -18,7 +18,6 @@ public class UpdateUserCommandHandler(UserDbContext context) : IRequestHandler<U
 
         user.Name = request.Name;
         user.BirthDate = request.BirthDate;
-        user.UpdatedAt = DateTime.UtcNow;
 
         await context.SaveChangesAsync(cancellationToken);
         return UserMapping.ToResponse(user);
