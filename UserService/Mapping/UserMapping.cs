@@ -23,7 +23,7 @@ public class UserMapping
 
     public static UserResponse ToResponse(UserEntity entity)
     {
-       return new UserResponse()
+        return new UserResponse()
         {
             Id = entity.Id,
             Name = entity.Name,
@@ -33,5 +33,4 @@ public class UserMapping
             IsBlocked = entity.IsBlocked
         };
     }
-    
 }

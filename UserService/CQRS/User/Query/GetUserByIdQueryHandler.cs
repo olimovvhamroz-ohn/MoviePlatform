@@ -5,7 +5,7 @@ using UserService.DTO.Response;
 using UserService.Exceptions;
 using UserService.Mapping;
 
-namespace UserService.SQRS.User.Query;
+namespace UserService.CQRS.User.Query;
 public record GetUserByIdQuery(long Id) : IRequest<UserResponse>;
 public class GetUserByIdQueryHandler(UserDbContext context) : IRequestHandler<GetUserByIdQuery, UserResponse>
 {

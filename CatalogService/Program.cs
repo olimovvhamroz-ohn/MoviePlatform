@@ -1,5 +1,4 @@
 using FluentValidation;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using MoviePlatform.Data;
 using MoviePlatform.Data.Interceptors;
@@ -31,6 +30,7 @@ builder.Services.AddMediatR(config =>
 });
 
 var app = builder.Build();
+
 if (app.Environment.IsDevelopment())
 {
     using var scope = app.Services.CreateScope();

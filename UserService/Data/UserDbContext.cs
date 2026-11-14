@@ -12,7 +12,6 @@ public class UserDbContext(DbContextOptions<UserDbContext> options) : DbContext(
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        ConfigureUser.ConfigureUserEntity(modelBuilder);
-        ConfigureRefreshToken.ConfigureRefreshTokenEntity(modelBuilder);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(ConfigureUser).Assembly);
     }
 }

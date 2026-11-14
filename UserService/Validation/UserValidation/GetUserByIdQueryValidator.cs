@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using UserService.SQRS.User.Query;
+using UserService.CQRS.User.Query;
 
 namespace UserService.Validation.UserValidation;
 

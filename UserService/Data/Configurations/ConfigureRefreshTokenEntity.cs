@@ -1,18 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using UserService.Entities;
 
 namespace UserService.Data.Configurations;
 
-public static class ConfigureRefreshToken
+public class ConfigureRefreshToken : IEntityTypeConfiguration<RefreshTokenEntity>
 {
-    public static void ConfigureRefreshTokenEntity(ModelBuilder modelBuilder)
+    public void Configure(EntityTypeBuilder<RefreshTokenEntity> builder)
     {
-        modelBuilder.Entity<RefreshTokenEntity>(e =>
-        {
-            e.ToTable("RefreshToken");
-            e.HasKey(x => x.Id);
-            e.Property(x => x.TokenHash).IsRequired();
-            e.HasQueryFilter(x => !x.IsDeleted);
-        });
+        builder.ToTable("RefreshToken");
+        builder.HasKey(x => x.Id);
+        builder.Property(x => x.TokenHash).IsRequired();
+        builder.HasQueryFilter(x => !x.IsDeleted);
     }
 }
