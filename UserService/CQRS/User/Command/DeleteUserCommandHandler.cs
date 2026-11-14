@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using UserService.Data;
 using UserService.Exceptions;
 
-namespace UserService.SQRS.User.Command;
+namespace UserService.CQRS.User.Command;
 
 public record DeleteUserCommand(long Id) : IRequest<bool>;
 

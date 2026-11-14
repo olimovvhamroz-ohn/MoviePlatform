@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using UserService.SQRS.User.Command;
+using UserService.CQRS.User.Command;
 
 namespace UserService.Validation.UserValidation;
 public class DeleteUserCommandValidator : AbstractValidator<DeleteUserCommand>

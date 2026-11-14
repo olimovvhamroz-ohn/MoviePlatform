@@ -5,7 +5,7 @@ using UserService.DTO.Response;
 using UserService.Exceptions;
 using UserService.Mapping;
 
-namespace UserService.SQRS.User.Command;
+namespace UserService.CQRS.User.Command;
 
 public record UpdateUserCommand(long Id, string Name, DateOnly BirthDate) : IRequest<UserResponse>;
 

@@ -56,7 +56,7 @@ namespace UserService.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("RefreshToken");
+                    b.ToTable("RefreshToken", (string)null);
                 });
 
             modelBuilder.Entity("UserService.Entities.UserEntity", b =>

@@ -16,15 +16,15 @@ public class CreateActorCommandHandler(
 {
     public async Task<ActorResponse> Handle(CreateActorCommand request, CancellationToken cancellationToken)
     {
-        
-
         var isDuplicate = await context.Actors.AnyAsync(
             x => x.Name.ToLower() == request.Request.Name.ToLower()
                  && x.BirthDate == request.Request.BirthDate,
             cancellationToken);
 
         if (isDuplicate)
+        {
             throw new ResourceIsAlreadyExistException("Actor with this name and birth date already exists");
+        }
 
         var actor = ActorMapping.ToEntity(request.Request);
 
