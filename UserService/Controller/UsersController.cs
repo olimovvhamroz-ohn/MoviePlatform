@@ -1,9 +1,10 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using UserService.CQRS.User.Command;
+using UserService.CQRS.User.Query;
 using UserService.DTO.Request;
 using UserService.DTO.Response;
-using UserService.SQRS.User.Command;
-using UserService.SQRS.User.Query;
 
 namespace UserService.Controller;
 
@@ -15,12 +16,13 @@ public class UsersController(IMediator mediator) : ControllerBase
     public async Task<ActionResult<UserResponse>> GetById(long id, CancellationToken cancellationToken)
         => Ok(await mediator.Send(new GetUserByIdQuery(id), cancellationToken));
 
-    [HttpPost]
-    public async Task<ActionResult<UserResponse>> Create(RegisterRequest request, CancellationToken cancellationToken)
+    [HttpPost("Register")]
+    public async Task<ActionResult<LoginResponse>> Create(RegisterRequest request, CancellationToken cancellationToken)
     {
         return await mediator.Send(new CreateUserCommand(request));
     }
 
+    [Authorize]
     [HttpPut("{id:long}")]
     public async Task<ActionResult<UserResponse>> Update(
         long id, UpdateUserRequest request, CancellationToken cancellationToken)
@@ -28,6 +30,7 @@ public class UsersController(IMediator mediator) : ControllerBase
         return Ok(await mediator.Send(new UpdateUserCommand(id, request.Name, request.BirthDate), cancellationToken));
     }
 
+    [Authorize]
     [HttpDelete("{id:long}")]
     public async Task<IActionResult> Delete(long id, CancellationToken cancellationToken)
     {
