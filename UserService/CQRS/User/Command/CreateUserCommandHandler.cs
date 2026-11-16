@@ -24,10 +24,10 @@ public class CreateUserCommandHandler(
     public async Task<LoginResponse> Handle(CreateUserCommand crateUserCommand, CancellationToken cancellationToken)
     {
         var request = crateUserCommand.Request;
-        
+
         var email = request.Email.Trim().ToLowerInvariant();
 
-        var emailChek = await context.Users.AnyAsync(x => x.Email == email,cancellationToken);
+        var emailChek = await context.Users.AnyAsync(x => x.Email == email, cancellationToken);
 
         if (emailChek)
         {
@@ -45,12 +45,16 @@ public class CreateUserCommandHandler(
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow
         };
-        
-        entity.Password = passwordHasher.HashPassword(entity,request.Password);
+
+        entity.Password = passwordHasher.HashPassword(entity, request.Password);
         context.Add(entity);
         await context.SaveChangesAsync(cancellationToken);
         logger.LogInformation("User {Id} registret", entity.Id);
 
-        return new LoginResponse { Token = jwtService.GenerateToken(entity) };
+        return new LoginResponse
+        {
+            Token = jwtService.GenerateToken(entity),
+            RefreshToken = jwtService.GenerateRefreshToken()
+        };
     }
 }

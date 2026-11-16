@@ -18,7 +18,7 @@ public class Login(
     IJwtService jwtService,
     IPasswordHasher<UserEntity> hasher) : ILogin
 {
-    public async Task<LoginResponse> LoginAsync(LoginRequest loginRequest )
+    public async Task<LoginResponse> LoginAsync(LoginRequest loginRequest)
     {
         var email = loginRequest.Email.Trim().ToLowerInvariant();
 
@@ -28,9 +28,9 @@ public class Login(
         {
             throw new UnauthorizedException("User  not found with this Email or User is  blocked ");
         }
-        
 
-        var result = hasher.VerifyHashedPassword(user, user.Password,loginRequest.Password);
+
+        var result = hasher.VerifyHashedPassword(user, user.Password, loginRequest.Password);
         if (result == PasswordVerificationResult.Failed)
         {
             throw new UnauthorizedException("Invalid  password");
@@ -42,6 +42,22 @@ public class Login(
             await context.SaveChangesAsync();
         }
 
-        return new LoginResponse { Token = jwtService.GenerateToken(user) };
+        var accessToken = jwtService.GenerateToken(user);
+        var refreshToken = jwtService.GenerateRefreshToken();
+
+        var refreshTokenEntity = new RefreshTokenEntity()
+        {
+            UserId = user.Id,
+            TokenHash = jwtService.HashRefreshToken(refreshToken),
+            ExpirationDate = DateTime.UtcNow.AddDays(7)
+        };
+        context.RefreshToken.Add(refreshTokenEntity);
+        await context.SaveChangesAsync();
+
+        return new LoginResponse
+        {
+            Token = accessToken,
+            RefreshToken = refreshToken
+        };
     }
 }
