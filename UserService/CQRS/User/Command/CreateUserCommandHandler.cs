@@ -7,7 +7,6 @@ using UserService.DTO.Request;
 using UserService.DTO.Response;
 using UserService.Entities;
 using UserService.Exceptions;
-using UserService.Mapping;
 
 namespace UserService.CQRS.User.Command;
 
