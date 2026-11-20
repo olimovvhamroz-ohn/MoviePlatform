@@ -24,9 +24,29 @@ builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<ILogin, Login>();
 // Controllers
 builder.Services.AddControllers();
+//gRPC
+builder.Services.AddGrpc();
+builder.Services.AddMagicOnion();
 // OpenAPI
+builder.Services.AddOpenApi(options =>
+{
+    options.AddDocumentTransformer((document, context, cancellationToken) =>
+    {
+        document.Components ??= new();
 
-builder.Services.AddOpenApi();
+        document.Components.SecuritySchemes ??=
+            new Dictionary<string, Microsoft.OpenApi.IOpenApiSecurityScheme>();
+
+        document.Components.SecuritySchemes["Bearer"] =
+            new Microsoft.OpenApi.OpenApiSecurityScheme
+            {
+                Type = Microsoft.OpenApi.SecuritySchemeType.Http,
+                Scheme = "bearer"
+            };
+
+        return Task.CompletedTask;
+    });
+});
 //Mediatr
 
 builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
@@ -76,5 +96,5 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-
+app.MapMagicOnionService();
 app.Run();
