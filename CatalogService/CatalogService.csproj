@@ -10,7 +10,15 @@
 
     <ItemGroup>
         <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.2.0" />
+        <PackageReference Include="Google.Protobuf" Version="3.36.2" />
+        <PackageReference Include="Grpc.Net.ClientFactory" Version="2.85.0" />
+        <PackageReference Include="Grpc.Tools" Version="2.85.0">
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+          <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="MagicOnion.Client" Version="7.11.0" />
         <PackageReference Include="MediatR" Version="14.3.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.14" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.1" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.14" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.14">
@@ -23,9 +31,12 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="CQRS\Common\" />
       <Folder Include="Entities\Abstractions\" />
       <Folder Include="Migrations\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Shared\Shared.csproj" />
     </ItemGroup>
 
 </Project>
