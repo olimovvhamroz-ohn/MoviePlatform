@@ -1,7 +1,7 @@
-﻿using FluentValidation;
-using MoviePlatform.CQRS.Review.Query;
+﻿using EngagementService.CQRS.Review.Query;
+using FluentValidation;
 
-namespace MoviePlatform.Validators.ReviewValidation;
+namespace EngagementService.Validators.ReviewValidation;
 
 public class GetReviewsByMovieQueryValidator : AbstractValidator<GetReviewsByMovieQuery>
 {
