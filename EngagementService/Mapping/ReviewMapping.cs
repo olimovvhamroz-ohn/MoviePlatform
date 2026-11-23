@@ -1,8 +1,8 @@
-﻿using MoviePlatform.DTO.Request;
-using MoviePlatform.DTO.Response;
-using MoviePlatform.Entities;
+﻿using EngagementService.DTO.Request;
+using EngagementService.DTO.Response;
+using EngagementService.Entities;
 
-namespace MoviePlatform.Mapping;
+namespace EngagementService.Mapping;
 
 public static class ReviewMapping
 {
@@ -30,4 +30,6 @@ public static class ReviewMapping
             CreatedAt = entity.CreatedAt
         };
     }
+    
+    
 }

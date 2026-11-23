@@ -1,4 +1,4 @@
-﻿namespace MoviePlatform.DTO.Response;
+﻿namespace EngagementService.DTO.Response;
 
 public class ReviewResponse
 {

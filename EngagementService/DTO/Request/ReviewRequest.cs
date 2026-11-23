@@ -1,6 +1,6 @@
-﻿namespace MoviePlatform.Entities;
+﻿namespace EngagementService.DTO.Request;
 
-public class ReviewEntity : BaseEntity
+public class ReviewRequest
 {
     public long UserId { get; set; }
     public long MovieId { get; set; }
