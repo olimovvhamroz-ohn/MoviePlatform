@@ -1,7 +1,7 @@
-﻿using FluentValidation;
-using MoviePlatform.CQRS.Review.Command;
+﻿using EngagementService.CQRS.Review.Command;
+using FluentValidation;
 
-namespace MoviePlatform.Validators.ReviewValidation;
+namespace EngagementService.Validators.ReviewValidation;
 
 public class CreateReviewCommandValidator : AbstractValidator<CreateReviewCommand>
 {
