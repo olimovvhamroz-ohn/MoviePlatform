@@ -1,16 +1,16 @@
-﻿using MediatR;
+﻿using EngagementService.Data;
+using EngagementService.DTO.Response;
+using EngagementService.Mapping;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
-using MoviePlatform.Data;
-using MoviePlatform.DTO.Response;
-using MoviePlatform.Mapping;
 
-namespace MoviePlatform.CQRS.Review.Query;
+namespace EngagementService.CQRS.Review.Query;
 
 public record GetReviewsByMovieQuery(long MovieId, int Page, int PageSize)
     : IRequest<List<ReviewResponse>>;
 
 public class GetReviewsByMovieQueryHandler(
-    ApplicationContext context) : IRequestHandler<GetReviewsByMovieQuery, List<ReviewResponse>>
+    EngagementDbContext context) : IRequestHandler<GetReviewsByMovieQuery, List<ReviewResponse>>
 {
     public async Task<List<ReviewResponse>> Handle(
         GetReviewsByMovieQuery request, CancellationToken cancellationToken)
