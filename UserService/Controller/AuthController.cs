@@ -4,6 +4,8 @@ using UserService.CQRS.AuthService;
 using UserService.DTO.Request;
 using UserService.DTO.Response;
 
+namespace UserService.Controller;
+
 [ApiController]
 [Route("api/Auth")]
 public class AuthController(ILogin login, IMediator mediator) : ControllerBase
