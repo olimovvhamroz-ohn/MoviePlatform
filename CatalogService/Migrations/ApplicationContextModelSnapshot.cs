@@ -17,7 +17,7 @@ namespace MoviePlatform.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.0")
+                .HasAnnotation("ProductVersion", "10.0.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -37,7 +37,7 @@ namespace MoviePlatform.Migrations
                     b.ToTable("movie_actors", (string)null);
                 });
 
-            modelBuilder.Entity("CatalogService.Entities.ActorEntity", b =>
+            modelBuilder.Entity("MoviePlatform.Entities.ActorEntity", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -73,7 +73,7 @@ namespace MoviePlatform.Migrations
                     b.ToTable("actors", (string)null);
                 });
 
-            modelBuilder.Entity("CatalogService.Entities.CategoryEntity", b =>
+            modelBuilder.Entity("MoviePlatform.Entities.CategoryEntity", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -104,7 +104,7 @@ namespace MoviePlatform.Migrations
                     b.ToTable("categories", (string)null);
                 });
 
-            modelBuilder.Entity("CatalogService.Entities.MovieEntity", b =>
+            modelBuilder.Entity("MoviePlatform.Entities.MovieEntity", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -174,48 +174,7 @@ namespace MoviePlatform.Migrations
                     b.ToTable("movies", (string)null);
                 });
 
-            modelBuilder.Entity("CatalogService.Entities.ReviewEntity", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("Comment")
-                        .HasMaxLength(2000)
-                        .HasColumnType("character varying(2000)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<long>("MovieId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("Rating")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MovieId");
-
-                    b.HasIndex("UserId", "MovieId")
-                        .IsUnique()
-                        .HasFilter("\"IsDeleted\" = false");
-
-                    b.ToTable("reviews", (string)null);
-                });
-
-            modelBuilder.Entity("CatalogService.Entities.StudioEntity", b =>
+            modelBuilder.Entity("MoviePlatform.Entities.StudioEntity", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -251,28 +210,28 @@ namespace MoviePlatform.Migrations
 
             modelBuilder.Entity("ActorEntityMovieEntity", b =>
                 {
-                    b.HasOne("CatalogService.Entities.ActorEntity", null)
+                    b.HasOne("MoviePlatform.Entities.ActorEntity", null)
                         .WithMany()
                         .HasForeignKey("ActorsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CatalogService.Entities.MovieEntity", null)
+                    b.HasOne("MoviePlatform.Entities.MovieEntity", null)
                         .WithMany()
                         .HasForeignKey("MovieEntityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("CatalogService.Entities.MovieEntity", b =>
+            modelBuilder.Entity("MoviePlatform.Entities.MovieEntity", b =>
                 {
-                    b.HasOne("CatalogService.Entities.CategoryEntity", "Category")
+                    b.HasOne("MoviePlatform.Entities.CategoryEntity", "Category")
                         .WithMany("Movies")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("CatalogService.Entities.StudioEntity", "Studio")
+                    b.HasOne("MoviePlatform.Entities.StudioEntity", "Studio")
                         .WithMany("Movies")
                         .HasForeignKey("StudioId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -283,12 +242,12 @@ namespace MoviePlatform.Migrations
                     b.Navigation("Studio");
                 });
 
-            modelBuilder.Entity("CatalogService.Entities.CategoryEntity", b =>
+            modelBuilder.Entity("MoviePlatform.Entities.CategoryEntity", b =>
                 {
                     b.Navigation("Movies");
                 });
 
-            modelBuilder.Entity("CatalogService.Entities.StudioEntity", b =>
+            modelBuilder.Entity("MoviePlatform.Entities.StudioEntity", b =>
                 {
                     b.Navigation("Movies");
                 });

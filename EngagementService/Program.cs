@@ -1,5 +1,6 @@
 using System.Text;
 using EngagementService.Data;
+using EngagementService.Grpc;
 using EngagementService.Middleware;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -8,7 +9,12 @@ using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
+// Controllers
 
+builder.Services.AddControllers();
+
+
+builder.Services.AddScoped<MovieGrpcClient>();
 // Database
 
 builder.Services.AddDbContext<EngagementDbContext>(options =>
@@ -36,10 +42,11 @@ builder.Services.AddOpenApi(options =>
         return Task.CompletedTask;
     });
 });
-// Controllers
 
 builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
+
 builder.Services.AddMediatR(config => { config.RegisterServicesFromAssembly(typeof(Program).Assembly); });
+
 var jwtKey = builder.Configuration["Jwt:SecretKey"]
              ?? throw new InvalidOperationException(
                  "JWT SecretKey is missing");
@@ -61,6 +68,8 @@ builder.Services.AddAuthentication(
         };
     });
 
+builder.Services.AddAuthorization();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -70,7 +79,6 @@ if (app.Environment.IsDevelopment())
         .Database.MigrateAsync();
 }
 app.UseMiddleware<ExceptionHandlingMiddleware>();
-
 // OpenAPI and Scalar
 if (app.Environment.IsDevelopment())
 {

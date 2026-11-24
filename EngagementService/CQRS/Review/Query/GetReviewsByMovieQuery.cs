@@ -1,5 +1,7 @@
 ﻿using EngagementService.Data;
 using EngagementService.DTO.Response;
+using EngagementService.Exception;
+using EngagementService.Grpc;
 using EngagementService.Mapping;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -10,14 +12,21 @@ public record GetReviewsByMovieQuery(long MovieId, int Page, int PageSize)
     : IRequest<List<ReviewResponse>>;
 
 public class GetReviewsByMovieQueryHandler(
-    EngagementDbContext context) : IRequestHandler<GetReviewsByMovieQuery, List<ReviewResponse>>
+    EngagementDbContext context,
+    MovieGrpcClient movieGrpcClient) : IRequestHandler<GetReviewsByMovieQuery, List<ReviewResponse>>
 {
     public async Task<List<ReviewResponse>> Handle(
         GetReviewsByMovieQuery request, CancellationToken cancellationToken)
     {
+
         var page = Math.Max(request.Page, 1);
         var pageSize = Math.Clamp(request.PageSize, 1, 100);
+        var movie = await movieGrpcClient.GetMovieById(
+            request.MovieId);
 
+        if (movie is null)
+            throw new ResourceNotFoundException("Movie not found.");
+        
         var reviews = await context.Reviews
             .AsNoTracking()
             .Where(x => x.MovieId == request.MovieId)

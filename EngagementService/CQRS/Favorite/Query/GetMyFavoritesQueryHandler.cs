@@ -1,5 +1,6 @@
 ﻿using EngagementService.Data;
 using EngagementService.DTO.Response;
+using EngagementService.Grpc;
 using EngagementService.Mapping;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +13,7 @@ public record GetMyFavoritesQuery(
     int PageSize
 ) : IRequest<List<FavoriteResponse>>;
 
-public class GetMyFavoritesQueryHandler(EngagementDbContext context)
+public class GetMyFavoritesQueryHandler(EngagementDbContext context,MovieGrpcClient movieGrpcClient)
     : IRequestHandler<GetMyFavoritesQuery, List<FavoriteResponse>>
 {
     public async Task<List<FavoriteResponse>> Handle(
@@ -30,7 +31,12 @@ public class GetMyFavoritesQueryHandler(EngagementDbContext context)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync(cancellationToken);
+        var movieIds = favorites
+            .Select(x => x.MovieId)
+            .ToHashSet();
 
+        var movies = await movieGrpcClient.GetMoviesByIds(
+            movieIds.ToHashSet());
         return favorites
             .Select(FavoriteMapping.ToResponse)
             .ToList();

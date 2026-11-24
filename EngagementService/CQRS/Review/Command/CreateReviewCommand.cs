@@ -2,6 +2,7 @@
 using EngagementService.DTO.Request;
 using EngagementService.DTO.Response;
 using EngagementService.Exception;
+using EngagementService.Grpc;
 using EngagementService.Mapping;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -10,13 +11,19 @@ public record CreateReviewCommand(ReviewRequest Review, long UserId)
 
 public class CreateReviewCommandHandler(
     EngagementDbContext context,
-    ILogger<CreateReviewCommandHandler> logger)
+    ILogger<CreateReviewCommandHandler> logger,
+    MovieGrpcClient movieGrpcClient)
     : IRequestHandler<CreateReviewCommand, ReviewResponse>
 {
     public async Task<ReviewResponse> Handle(
         CreateReviewCommand request,
         CancellationToken cancellationToken)
     {
+        var movie = await movieGrpcClient.GetMovieById(
+            request.Review.MovieId);
+
+        if (movie is null)
+            throw new ResourceNotFoundException("Movie not found.");
         var isDuplicate = await context.Reviews.AnyAsync(
             x => x.UserId == request.UserId &&
                  x.MovieId == request.Review.MovieId,

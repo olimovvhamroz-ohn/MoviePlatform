@@ -68,7 +68,7 @@ builder.Services.AddAuthentication(
     });
 
 builder.Services.AddAuthorization();
-
+builder.Services.AddMagicOnion();
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -94,5 +94,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapMagicOnionService();
 
 app.Run();
