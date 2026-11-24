@@ -1,5 +1,4 @@
-﻿using EngagementService.CQRS.Review.Command;
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace EngagementService.Validators.ReviewValidation;
 
