@@ -1,9 +1,9 @@
 ﻿using EngagementService.Data;
 using EngagementService.DTO.Response;
-using EngagementService.Grpc;
 using EngagementService.Mapping;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Shared.Contracts;
 
 namespace EngagementService.CQRS.Favorite.Query;
 
@@ -13,7 +13,7 @@ public record GetMyFavoritesQuery(
     int PageSize
 ) : IRequest<List<FavoriteResponse>>;
 
-public class GetMyFavoritesQueryHandler(EngagementDbContext context,MovieGrpcClient movieGrpcClient)
+public class GetMyFavoritesQueryHandler(EngagementDbContext context,IMovieService service)
     : IRequestHandler<GetMyFavoritesQuery, List<FavoriteResponse>>
 {
     public async Task<List<FavoriteResponse>> Handle(
@@ -35,7 +35,7 @@ public class GetMyFavoritesQueryHandler(EngagementDbContext context,MovieGrpcCli
             .Select(x => x.MovieId)
             .ToHashSet();
 
-        var movies = await movieGrpcClient.GetMoviesByIds(
+        var movies = await service.GetMoviesByIds(
             movieIds.ToHashSet());
         return favorites
             .Select(FavoriteMapping.ToResponse)

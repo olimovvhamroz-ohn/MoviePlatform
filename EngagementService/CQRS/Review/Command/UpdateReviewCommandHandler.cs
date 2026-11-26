@@ -2,10 +2,10 @@
 using EngagementService.DTO.Request;
 using EngagementService.DTO.Response;
 using EngagementService.Exception;
-using EngagementService.Grpc;
 using EngagementService.Mapping;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Shared.Contracts;
 
 namespace EngagementService.CQRS.Review.Command;
 
@@ -16,13 +16,13 @@ public record UpdateReviewCommand(
 
 public class UpdateReviewCommandHandler(
     EngagementDbContext context,
-    MovieGrpcClient movieGrpcClient)
+    IMovieService service)
     : IRequestHandler<UpdateReviewCommand, ReviewResponse>
 {
     public async Task<ReviewResponse> Handle(
         UpdateReviewCommand request,
         CancellationToken cancellationToken)
-    { var movie = await movieGrpcClient.GetMovieById(
+    { var movie = await service.GetMovieById(
                  request.Request.MovieId);
      
              if (movie is null)
