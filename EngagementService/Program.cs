@@ -1,26 +1,28 @@
 using System.Text;
 using EngagementService.Data;
-using EngagementService.Grpc;
 using EngagementService.Middleware;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
+using ApiClient;
 
 var builder = WebApplication.CreateBuilder(args);
+
 // Controllers
 
 builder.Services.AddControllers();
 
-
-builder.Services.AddScoped<MovieGrpcClient>();
 // Database
 
 builder.Services.AddDbContext<EngagementDbContext>(options =>
     options.UseNpgsql(
         builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// CatalogService Client
+builder.Services.AddCatalogService(
+    builder.Configuration["GrpcSettings:CatalogServiceUrl"]!);
 
 // OpenAPI
 builder.Services.AddOpenApi(options =>
@@ -68,6 +70,7 @@ builder.Services.AddAuthentication(
         };
     });
 
+
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
@@ -78,7 +81,10 @@ if (app.Environment.IsDevelopment())
     await scope.ServiceProvider.GetRequiredService<EngagementDbContext>()
         .Database.MigrateAsync();
 }
+
+//Middleware
 app.UseMiddleware<ExceptionHandlingMiddleware>();
+
 // OpenAPI and Scalar
 if (app.Environment.IsDevelopment())
 {

@@ -1,10 +1,10 @@
 ﻿using EngagementService.Data;
 using EngagementService.DTO.Response;
 using EngagementService.Exception;
-using EngagementService.Grpc;
 using EngagementService.Mapping;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Shared.Contracts;
 
 namespace EngagementService.CQRS.Review.Query;
 
@@ -13,7 +13,7 @@ public record GetReviewsByMovieQuery(long MovieId, int Page, int PageSize)
 
 public class GetReviewsByMovieQueryHandler(
     EngagementDbContext context,
-    MovieGrpcClient movieGrpcClient) : IRequestHandler<GetReviewsByMovieQuery, List<ReviewResponse>>
+    IMovieService service) : IRequestHandler<GetReviewsByMovieQuery, List<ReviewResponse>>
 {
     public async Task<List<ReviewResponse>> Handle(
         GetReviewsByMovieQuery request, CancellationToken cancellationToken)
@@ -21,7 +21,7 @@ public class GetReviewsByMovieQueryHandler(
 
         var page = Math.Max(request.Page, 1);
         var pageSize = Math.Clamp(request.PageSize, 1, 100);
-        var movie = await movieGrpcClient.GetMovieById(
+        var movie = await service.GetMovieById(
             request.MovieId);
 
         if (movie is null)

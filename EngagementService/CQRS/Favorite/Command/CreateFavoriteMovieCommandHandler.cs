@@ -2,10 +2,10 @@
 using EngagementService.DTO.Request;
 using EngagementService.DTO.Response;
 using EngagementService.Exception;
-using EngagementService.Grpc;
 using EngagementService.Mapping;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Shared.Contracts;
 
 namespace EngagementService.CQRS.Favorite.Command;
 
@@ -13,11 +13,11 @@ public record CreateFavoriteMovieCommand(FavoriteRequest FavoriteRequest,long Us
 
 public class CreateFavoriteMovieCommandHandler(
     EngagementDbContext context,
-    MovieGrpcClient movieGrpcClient) : IRequestHandler<CreateFavoriteMovieCommand, FavoriteResponse>
+    IMovieService service) : IRequestHandler<CreateFavoriteMovieCommand, FavoriteResponse>
 {
     public async Task<FavoriteResponse> Handle(CreateFavoriteMovieCommand request, CancellationToken cancellationToken)
     {
-        var movie = await movieGrpcClient.GetMovieById(
+        var movie = await service.GetMovieById(
             request.FavoriteRequest.MovieId);
 
         if (movie is null)

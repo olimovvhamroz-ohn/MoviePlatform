@@ -2,24 +2,25 @@
 using EngagementService.DTO.Request;
 using EngagementService.DTO.Response;
 using EngagementService.Exception;
-using EngagementService.Grpc;
 using EngagementService.Mapping;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Shared.Contracts;
+
 public record CreateReviewCommand(ReviewRequest Review, long UserId)
     : IRequest<ReviewResponse>;
 
 public class CreateReviewCommandHandler(
     EngagementDbContext context,
     ILogger<CreateReviewCommandHandler> logger,
-    MovieGrpcClient movieGrpcClient)
+    IMovieService service)
     : IRequestHandler<CreateReviewCommand, ReviewResponse>
 {
     public async Task<ReviewResponse> Handle(
         CreateReviewCommand request,
         CancellationToken cancellationToken)
     {
-        var movie = await movieGrpcClient.GetMovieById(
+        var movie = await service.GetMovieById(
             request.Review.MovieId);
 
         if (movie is null)
